@@ -17,7 +17,7 @@
       <path d="M16 2 L28 7 V16 C28 23 22.5 28 16 30 C9.5 28 4 23 4 16 V7 Z" fill="#2F6BFF" stroke="#111318" stroke-width="2" stroke-linejoin="round"/>
       <path d="M10.5 16.5 L14.5 20.5 L21.5 12.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="t">Wei Loong Simply Lovely Portfolio</span>
+    <span class="t">root@portfolio</span>
   </div>
   <nav>
     <a href="#about">About</a>
@@ -26,8 +26,8 @@
     <a href="#competitions">Competitions</a>
     <a href="#certs">Certs</a>
     <a href="#contact">Contact</a>
-    <label class="language-picker"><span class="sr-only">Choose language</span><select id="languageSelect" aria-label="Choose language">
-      <option value="">Language</option><option value="ms">Bahasa Melayu</option><option value="zh-CN">中文 (简体)</option><option value="zh-TW">中文 (繁體)</option><option value="ta">தமிழ்</option><option value="ar">العربية</option><option value="bn">বাংলা</option><option value="de">Deutsch</option><option value="es">Español</option><option value="fr">Français</option><option value="hi">हिन्दी</option><option value="id">Indonesia</option><option value="it">Italiano</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt">Português</option><option value="ru">Русский</option><option value="th">ไทย</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option>
+    <label class="language-picker"><span class="sr-only" data-i18n="chooseLanguage">Choose language</span><select id="languageSelect" aria-label="Choose language">
+      <option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option>
     </select></label>
     <button id="editBtn">Edit content</button>
   </nav>
@@ -185,7 +185,15 @@
 <div id="editOverlay">
   <div class="panel">
     <h2>Edit your content</h2>
-    <p class="hint">Fill this in with your own info and photos, then hit Save. On a PHP host this saves for every visitor. On GitHub Pages it downloads a new data.json — upload that file to your repo to make the change permanent.</p>
+    <p class="hint" data-i18n="editorHint">Edit your details and save them directly to your GitHub repository. GitHub will publish the changes after its Pages build completes.</p>
+
+    <div class="field github-save-fields">
+      <label for="fGithubRepo" data-i18n="githubRepo">GitHub repository (owner/repository)</label>
+      <input type="text" id="fGithubRepo" placeholder="username/portfolio" autocomplete="off">
+      <label for="fGithubToken" data-i18n="githubToken">Fine-grained GitHub token (Contents: read and write)</label>
+      <input type="password" id="fGithubToken" autocomplete="off" spellcheck="false">
+      <p class="sub" data-i18n="tokenHint">Create a fine-grained token for this repository with Contents read and write access. The token is used only for this save and is not stored.</p>
+    </div>
 
     <div class="field">
       <label>Profile photo</label>
