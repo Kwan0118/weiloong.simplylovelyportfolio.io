@@ -21,9 +21,15 @@ A static portfolio site (HTML + CSS + JavaScript). All your content lives in `da
 
 ## Editing your content
 
-1. Open your site with `?edit` on the end, for example `https://YOUR-USERNAME.github.io/portfolio/?edit`. The **Edit content** button only shows this way, so visitors won't see it.
-2. Change your details, add your photo and projects, then press **Save**. The page updates and your browser downloads a new `data.json`.
-3. In your GitHub repository, click **Add file → Upload files** and upload that `data.json` (it replaces the old one). Your site updates after a minute.
+1. Open your portfolio and click **Edit content** in the top menu.
+2. In GitHub, create a fine-grained personal access token for this repository. Give it **Contents: Read and write** permission.
+3. In the edit panel, confirm the `owner/repository` field, paste the token, make your changes, and click **Save**. The page commits the updated `data.json` directly to GitHub; it does not download a file. GitHub Pages publishes the commit after its build finishes.
+
+The token is cleared after each save and is not stored by the page. Do not put it in `data.json` or share it in a message.
+
+## Language menu
+
+The menu changes the site interface labels in English, Bahasa Melayu, Simplified Chinese, and Traditional Chinese. Portfolio text you enter remains as written.
 
 ## Try it on your computer first
 
