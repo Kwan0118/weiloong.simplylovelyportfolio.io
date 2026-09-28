@@ -170,7 +170,7 @@ footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); font-fam
 .field { margin-bottom: 18px; }
 .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; }
 .field .sub { color: var(--text-1); font-size: 12px; margin: -2px 0 6px; }
-.field input[type=text], .field input[type=url], .field textarea { width: 100%; background: #fff; border: 1.5px solid var(--line); border-radius: 6px; color: var(--ink); font-family: var(--sans); font-size: 14px; padding: 10px 12px; resize: vertical; }
+.field input[type=text], .field input[type=url], .field input[type=password], .field textarea { width: 100%; background: #fff; border: 1.5px solid var(--line); border-radius: 6px; color: var(--ink); font-family: var(--sans); font-size: 14px; padding: 10px 12px; resize: vertical; }
 .field textarea { font-family: var(--mono); font-size: 13px; min-height: 70px; line-height: 1.5; }
 .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
 .img-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
