@@ -5,20 +5,100 @@ function loadData() {
   return JSON.parse(JSON.stringify(INITIAL_DATA));
 }
 
-// Saves to the server via save.php.
-async function saveData(data) {
+async function saveData(data, token) {
+  const repoPath = document.getElementById('fGithubRepo').value.trim();
+  if (token && repoPath) {
+    const parts = repoPath.split('/').filter(Boolean);
+    if (parts.length !== 2) return { ok: false, error: 'Enter the repository as owner/repository.' };
+    const [owner, repo] = parts;
+    const base = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json'
+    };
+    try {
+      const repoRes = await fetch(base, { headers });
+      if (!repoRes.ok) return { ok: false, error: `GitHub repository access failed (${repoRes.status}). Check the repository name and token permissions.` };
+      const branch = (await repoRes.json()).default_branch;
+      const fileRes = await fetch(`${base}/contents/data.json?ref=${encodeURIComponent(branch)}`, { headers });
+      if (!fileRes.ok) return { ok: false, error: `Could not read data.json from GitHub (${fileRes.status}).` };
+      const file = await fileRes.json();
+      const putRes = await fetch(`${base}/contents/data.json`, {
+        method: 'PUT', headers,
+        body: JSON.stringify({
+          message: 'Update portfolio content',
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))),
+          sha: file.sha,
+          branch
+        })
+      });
+      if (!putRes.ok) {
+        const error = await putRes.json().catch(() => ({}));
+        return { ok: false, error: error.message || `GitHub could not save data.json (${putRes.status}).` };
+      }
+      return { ok: true, repo: `${owner}/${repo}` };
+    } catch (error) {
+      return { ok: false, error: 'Could not connect to GitHub. Check your connection and try again.' };
+    }
+  }
+  if (location.hostname.endsWith('.github.io')) {
+    return { ok: false, error: 'Enter your GitHub repository and a fine-grained token with Contents read/write access.' };
+  }
   try {
     const res = await fetch('save.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
     });
-    const result = await res.json();
-    return result;
-  } catch (e) {
-    // no PHP available (e.g. GitHub Pages) — the caller falls back to downloading data.json
-    return { ok: false, noServer: true, error: 'No PHP server found.' };
+    return await res.json();
+  } catch (error) {
+    return { ok: false, error: 'No save server is available here. Open the GitHub Pages site and save with your repository token.' };
   }
+}
+
+const UI_TRANSLATIONS = {
+  en: {
+    '[data-i18n="chooseLanguage"]': 'Choose language', 'nav a[href="#about"]': 'About', 'nav a[href="#skills"]': 'Skills', 'nav a[href="#projects"]': 'Projects', 'nav a[href="#competitions"]': 'Competitions', 'nav a[href="#certs"]': 'Certs', 'nav a[href="#contact"]': 'Contact', '#editBtn': 'Edit content', '.hello': "Hello, I'm", '.i-am': "I'm", '.hero-links a[href="#projects"]': 'My Projects', '#heroResume': 'My Resume', '#about .path': 'about', '#skills .path': 'skills', '#projects .path': 'projects', '#competitions .path': 'competitions', '#certs .path': 'certifications', '#contact .path': 'contact', '#editOverlay h2': 'Edit your content', '#editOverlay .hint': 'Edit your details and save them directly to your GitHub repository. GitHub will publish the changes after its Pages build completes.', '#closeBtn': 'Close', '#saveBtn': 'Save', '#addProjectBtn': '+ Add project', '#addCompetitionBtn': '+ Add competition', '.github-save-fields label[for="fGithubRepo"]': 'GitHub repository (owner/repository)', '.github-save-fields label[for="fGithubToken"]': 'Fine-grained GitHub token (Contents: read and write)', '.github-save-fields .sub': 'Create a fine-grained token for this repository with Contents read and write access. The token is used only for this save and is not stored.'
+  },
+  ms: {
+    '[data-i18n="chooseLanguage"]': 'Pilih bahasa', 'nav a[href="#about"]': 'Tentang', 'nav a[href="#skills"]': 'Kemahiran', 'nav a[href="#projects"]': 'Projek', 'nav a[href="#competitions"]': 'Pertandingan', 'nav a[href="#certs"]': 'Sijil', 'nav a[href="#contact"]': 'Hubungi', '#editBtn': 'Edit kandungan', '.hello': 'Hai, saya', '.i-am': 'Saya', '.hero-links a[href="#projects"]': 'Projek Saya', '#heroResume': 'Resume Saya', '#about .path': 'tentang', '#skills .path': 'kemahiran', '#projects .path': 'projek', '#competitions .path': 'pertandingan', '#certs .path': 'pensijilan', '#contact .path': 'hubungi', '#editOverlay h2': 'Edit kandungan anda', '#editOverlay .hint': 'Edit maklumat anda dan simpan terus ke repositori GitHub. GitHub akan menerbitkan perubahan selepas binaan Pages selesai.', '#closeBtn': 'Tutup', '#saveBtn': 'Simpan', '#addProjectBtn': '+ Tambah projek', '#addCompetitionBtn': '+ Tambah pertandingan', '.github-save-fields label[for="fGithubRepo"]': 'Repositori GitHub (pemilik/repositori)', '.github-save-fields label[for="fGithubToken"]': 'Token GitHub (kebenaran baca dan tulis kandungan)', '.github-save-fields .sub': 'Cipta token terhad untuk repositori ini dengan akses baca dan tulis Contents. Token hanya digunakan untuk simpanan ini dan tidak disimpan.'
+  },
+  'zh-CN': {
+    '[data-i18n="chooseLanguage"]': '选择语言', 'nav a[href="#about"]': '关于', 'nav a[href="#skills"]': '技能', 'nav a[href="#projects"]': '项目', 'nav a[href="#competitions"]': '竞赛', 'nav a[href="#certs"]': '证书', 'nav a[href="#contact"]': '联系', '#editBtn': '编辑内容', '.hello': '你好，我是', '.i-am': '我是', '.hero-links a[href="#projects"]': '我的项目', '#heroResume': '我的简历', '#about .path': '关于', '#skills .path': '技能', '#projects .path': '项目', '#competitions .path': '竞赛', '#certs .path': '证书', '#contact .path': '联系', '#editOverlay h2': '编辑您的内容', '#editOverlay .hint': '编辑资料并直接保存到 GitHub 仓库。GitHub Pages 构建完成后会发布更改。', '#closeBtn': '关闭', '#saveBtn': '保存', '#addProjectBtn': '+ 添加项目', '#addCompetitionBtn': '+ 添加竞赛', '.github-save-fields label[for="fGithubRepo"]': 'GitHub 仓库（所有者/仓库名）', '.github-save-fields label[for="fGithubToken"]': 'GitHub 细粒度令牌（内容读写权限）', '.github-save-fields .sub': '请为此仓库创建具有 Contents 读写权限的细粒度令牌。令牌仅用于本次保存，不会被储存。'
+  },
+  'zh-TW': {
+    '[data-i18n="chooseLanguage"]': '選擇語言', 'nav a[href="#about"]': '關於', 'nav a[href="#skills"]': '技能', 'nav a[href="#projects"]': '專案', 'nav a[href="#competitions"]': '競賽', 'nav a[href="#certs"]': '證書', 'nav a[href="#contact"]': '聯絡', '#editBtn': '編輯內容', '.hello': '你好，我是', '.i-am': '我是', '.hero-links a[href="#projects"]': '我的專案', '#heroResume': '我的履歷', '#about .path': '關於', '#skills .path': '技能', '#projects .path': '專案', '#competitions .path': '競賽', '#certs .path': '證書', '#contact .path': '聯絡', '#editOverlay h2': '編輯您的內容', '#editOverlay .hint': '編輯資料並直接儲存到 GitHub 儲存庫。GitHub Pages 建置完成後會發布變更。', '#closeBtn': '關閉', '#saveBtn': '儲存', '#addProjectBtn': '+ 新增專案', '#addCompetitionBtn': '+ 新增競賽', '.github-save-fields label[for="fGithubRepo"]': 'GitHub 儲存庫（擁有者/儲存庫）', '.github-save-fields label[for="fGithubToken"]': 'GitHub 細緻權杖（內容讀寫權限）', '.github-save-fields .sub': '請為此儲存庫建立具有 Contents 讀寫權限的細緻權杖。權杖僅用於本次儲存，不會保存。'
+  }
+};
+
+let activeLanguage = 'en';
+function applyLanguage(language) {
+  if (!UI_TRANSLATIONS[language]) language = 'en';
+  activeLanguage = language;
+  const dictionary = UI_TRANSLATIONS[language] || UI_TRANSLATIONS.en;
+  document.documentElement.lang = language;
+  Object.entries(UI_TRANSLATIONS.en).forEach(([selector, english]) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = dictionary[selector] || english;
+  });
+  const labels = {
+    ms: { 'Profile photo':'Foto profil', Name:'Nama', 'Typed role (types out under your name)':'Peranan yang ditaip di bawah nama', Tagline:'Slogan', 'Resume link':'Pautan resume', About:'Tentang', Skills:'Kemahiran', Projects:'Projek', Competitions:'Pertandingan', Certifications:'Pensijilan', 'Contact intro line':'Pengenalan hubungan', 'Contact links':'Pautan hubungan', 'Footer line':'Teks pengaki', Title:'Tajuk', Tags:'Tag', Description:'Penerangan', Link:'Pautan', 'Link label':'Label pautan', 'Project photo':'Foto projek', Organizer:'Penganjur', Date:'Tarikh', 'Result or award':'Keputusan atau anugerah', 'Link (optional)':'Pautan (pilihan)' },
+    'zh-CN': { 'Profile photo':'个人照片', Name:'姓名', 'Typed role (types out under your name)':'姓名下方显示的职位', Tagline:'简介', 'Resume link':'简历链接', About:'关于', Skills:'技能', Projects:'项目', Competitions:'竞赛', Certifications:'证书', 'Contact intro line':'联系说明', 'Contact links':'联系链接', 'Footer line':'页脚文字', Title:'标题', Tags:'标签', Description:'描述', Link:'链接', 'Link label':'链接文字', 'Project photo':'项目图片', Organizer:'主办方', Date:'日期', 'Result or award':'成绩或奖项', 'Link (optional)':'链接（可选）' },
+    'zh-TW': { 'Profile photo':'個人照片', Name:'姓名', 'Typed role (types out under your name)':'姓名下方顯示的職稱', Tagline:'簡介', 'Resume link':'履歷連結', About:'關於', Skills:'技能', Projects:'專案', Competitions:'競賽', Certifications:'證書', 'Contact intro line':'聯絡說明', 'Contact links':'聯絡連結', 'Footer line':'頁尾文字', Title:'標題', Tags:'標籤', Description:'描述', Link:'連結', 'Link label':'連結文字', 'Project photo':'專案圖片', Organizer:'主辦單位', Date:'日期', 'Result or award':'成績或獎項', 'Link (optional)':'連結（選填）' }
+  }[language] || {};
+  document.querySelectorAll('#editOverlay label:not(.file-label):not([for="fGithubRepo"]):not([for="fGithubToken"])').forEach(label => {
+    const original = label.dataset.english || label.textContent.trim();
+    label.dataset.english = original;
+    label.textContent = labels[original] || original;
+  });
+  document.querySelectorAll('#editOverlay .section-h').forEach(heading => {
+    const original = heading.dataset.english || heading.textContent.trim();
+    heading.dataset.english = original;
+    heading.textContent = labels[original] || original;
+  });
+  const selector = document.getElementById('languageSelect');
+  if (selector) selector.value = language;
+  try { localStorage.setItem('portfolio-language', language); } catch (error) {}
 }
 
 // resize + compress an uploaded image so it stays small in localStorage
@@ -65,6 +145,24 @@ function parseLinks(raw) {
   });
 }
 
+function safeLink(value) {
+  if (!value) return '';
+  try {
+    const url = new URL(value, location.href);
+    return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.href : '';
+  } catch (error) { return ''; }
+}
+function safeImage(value) {
+  if (/^data:image\/(?:jpeg|png|webp|gif);base64,/i.test(value || '')) return value;
+  try {
+    const url = new URL(value, location.href);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+  } catch (error) { return ''; }
+}
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]);
+}
+
 // splits the name into letters so each one can pop in, one by one
 const NAME_GRADIENT = [[91, 108, 255], [178, 79, 227], [255, 79, 163]];
 function nameColor(t) {
@@ -100,7 +198,7 @@ function renderName(name) {
 function render(data) {
   renderName(data.name);
   document.getElementById('heroTagline').textContent = data.tagline;
-  document.getElementById('heroResume').href = data.resumeUrl || '#';
+  document.getElementById('heroResume').href = safeLink(data.resumeUrl) || '#';
   document.getElementById('aboutText').textContent = data.about;
   document.getElementById('contactText').textContent = data.contactText;
   document.getElementById('footerText').textContent = data.footer;
@@ -108,7 +206,8 @@ function render(data) {
 
   const avImg = document.getElementById('heroAvatarImg');
   const avFallback = document.getElementById('heroAvatarFallback');
-  if (data.avatarImage) { avImg.src = data.avatarImage; avImg.style.display = 'block'; avFallback.style.display = 'none'; }
+  const avatar = safeImage(data.avatarImage);
+  if (avatar) { avImg.src = avatar; avImg.style.display = 'block'; avFallback.style.display = 'none'; }
   else { avImg.style.display = 'none'; avFallback.style.display = 'flex'; }
 
   const skillsEl = document.getElementById('skillGroups');
@@ -116,21 +215,27 @@ function render(data) {
   parseSkills(data.skillsRaw).forEach(g => {
     const div = document.createElement('div');
     div.className = 'skill-group';
-    div.innerHTML = `<h3>${g.category}</h3><ul>${g.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    const heading = document.createElement('h3'); heading.textContent = g.category;
+    const list = document.createElement('ul');
+    g.items.forEach(item => { const li = document.createElement('li'); li.textContent = item; list.appendChild(li); });
+    div.append(heading, list);
     skillsEl.appendChild(div);
   });
 
   const projEl = document.getElementById('projectList');
   projEl.innerHTML = '';
   (data.projects || []).forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'project';
-    div.innerHTML = `
-      ${p.image ? `<img class="project-img" src="${p.image}" alt="${p.title} screenshot">` : ''}
-      <div class="project-head"><span class="project-title">${p.title}</span><span class="project-tags">${p.tags}</span></div>
-      <p>${p.description}</p>
-      ${p.link ? `<a class="project-link" href="${p.link}" target="_blank" rel="noopener">${p.linkLabel || 'View'}</a>` : ''}
-    `;
+    const div = document.createElement('article'); div.className = 'project';
+    const image = safeImage(p.image);
+    if (image) { const img = document.createElement('img'); img.className = 'project-img'; img.src = image; img.alt = `${p.title || 'Project'} screenshot`; div.appendChild(img); }
+    const head = document.createElement('div'); head.className = 'project-head';
+    const title = document.createElement('span'); title.className = 'project-title'; title.textContent = p.title || '';
+    const tags = document.createElement('span'); tags.className = 'project-tags'; tags.textContent = p.tags || '';
+    head.append(title, tags);
+    const description = document.createElement('p'); description.textContent = p.description || '';
+    div.append(head, description);
+    const projectHref = safeLink(p.link);
+    if (projectHref) { const a = document.createElement('a'); a.className = 'project-link'; a.href = projectHref; a.target = '_blank'; a.rel = 'noopener'; a.textContent = p.linkLabel || 'View'; div.appendChild(a); }
     projEl.appendChild(div);
   });
 
@@ -142,18 +247,23 @@ function render(data) {
     const meta = document.createElement('p'); meta.className = 'competition-meta'; meta.textContent = [c.organizer, c.date, c.result].filter(Boolean).join(' · ');
     const description = document.createElement('p'); description.textContent = c.description || '';
     card.append(title, meta, description);
-    if (c.link) { const a = document.createElement('a'); a.className = 'project-link'; a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View details'; card.appendChild(a); }
+    const competitionHref = safeLink(c.link);
+    if (competitionHref) { const a = document.createElement('a'); a.className = 'project-link'; a.href = competitionHref; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View details'; card.appendChild(a); }
     competitionEl.appendChild(card);
   });
   if (!(data.competitions || []).length) {
-    const empty = document.createElement('p'); empty.className = 'competition-empty'; empty.textContent = 'Competition achievements will appear here.'; competitionEl.appendChild(empty);
+    const empty = document.createElement('p'); empty.className = 'competition-empty';
+    empty.textContent = ({ ms: 'Pencapaian pertandingan akan dipaparkan di sini.', 'zh-CN': '竞赛成果将显示在这里。', 'zh-TW': '競賽成果將顯示於此。' })[activeLanguage] || 'Competition achievements will appear here.';
+    competitionEl.appendChild(empty);
   }
 
   const certEl = document.getElementById('certList');
   certEl.innerHTML = '';
   parseCerts(data.certsRaw).forEach(c => {
     const li = document.createElement('li');
-    li.innerHTML = `<span>${c.name}</span><span class="cert-meta">${c.meta}</span>`;
+    const name = document.createElement('span'); name.textContent = c.name || '';
+    const meta = document.createElement('span'); meta.className = 'cert-meta'; meta.textContent = c.meta || '';
+    li.append(name, meta);
     certEl.appendChild(li);
   });
 
@@ -161,11 +271,10 @@ function render(data) {
   linksEl.innerHTML = '';
   parseLinks(data.contactLinksRaw).forEach(c => {
     const a = document.createElement('a');
-    a.href = c.href;
-    a.target = c.href.startsWith('http') ? '_blank' : '_self';
-    a.rel = 'noopener';
-    a.innerHTML = `<span>${c.label} — ${c.value}</span>`;
-    linksEl.appendChild(a);
+    const href = safeLink(c.href);
+    if (href) { a.href = href; a.target = href.startsWith('http') ? '_blank' : '_self'; a.rel = 'noopener'; }
+    const text = document.createElement('span'); text.textContent = `${c.label} — ${c.value}`;
+    a.appendChild(text); linksEl.appendChild(a);
   });
 }
 
@@ -190,6 +299,7 @@ function buildCompetitionFields() {
   });
   container.querySelectorAll('[data-comp-field]').forEach(el => el.addEventListener('input', () => { editingCompetitions[el.dataset.idx][el.dataset.compField] = el.value; }));
   container.querySelectorAll('[data-comp-remove]').forEach(el => el.addEventListener('click', () => { editingCompetitions.splice(el.dataset.compRemove, 1); buildCompetitionFields(); }));
+  applyLanguage(activeLanguage);
 }
 
 document.getElementById('addCompetitionBtn').addEventListener('click', () => {
@@ -208,15 +318,15 @@ function buildProjectFields() {
         <span>Project ${idx + 1}</span>
         <button class="btn small danger" data-remove="${idx}" type="button">Remove</button>
       </div>
-      <div class="field"><label>Title</label><input type="text" data-field="title" data-idx="${idx}" value="${(p.title||'').replace(/"/g,'&quot;')}"></div>
-      <div class="field"><label>Tags</label><input type="text" data-field="tags" data-idx="${idx}" value="${(p.tags||'').replace(/"/g,'&quot;')}"></div>
-      <div class="field"><label>Description</label><textarea data-field="description" data-idx="${idx}">${p.description||''}</textarea></div>
-      <div class="field"><label>Link</label><input type="url" data-field="link" data-idx="${idx}" value="${(p.link||'').replace(/"/g,'&quot;')}"></div>
-      <div class="field"><label>Link label</label><input type="text" data-field="linkLabel" data-idx="${idx}" value="${(p.linkLabel||'').replace(/"/g,'&quot;')}"></div>
+      <div class="field"><label>Title</label><input type="text" data-field="title" data-idx="${idx}" value="${escapeHtml(p.title)}"></div>
+      <div class="field"><label>Tags</label><input type="text" data-field="tags" data-idx="${idx}" value="${escapeHtml(p.tags)}"></div>
+      <div class="field"><label>Description</label><textarea data-field="description" data-idx="${idx}">${escapeHtml(p.description)}</textarea></div>
+      <div class="field"><label>Link</label><input type="url" data-field="link" data-idx="${idx}" value="${escapeHtml(p.link)}"></div>
+      <div class="field"><label>Link label</label><input type="text" data-field="linkLabel" data-idx="${idx}" value="${escapeHtml(p.linkLabel)}"></div>
       <div class="field">
         <label>Project photo</label>
         <div class="img-row">
-          <img class="thumb wide" data-preview="${idx}" style="display:${p.image ? 'block':'none'}" src="${p.image||''}">
+          <img class="thumb wide" data-preview="${idx}" style="display:${p.image ? 'block':'none'}" src="${escapeHtml(safeImage(p.image))}">
           <label class="file-label">Choose photo<input type="file" accept="image/*" data-imgfile="${idx}"></label>
           <button class="btn small" data-imgremove="${idx}" type="button">Remove photo</button>
         </div>
@@ -254,6 +364,7 @@ function buildProjectFields() {
       buildProjectFields();
     });
   });
+  applyLanguage(activeLanguage);
 }
 
 document.getElementById('addProjectBtn').addEventListener('click', () => {
@@ -273,6 +384,12 @@ function fillForm(data) {
   fContactText.value = data.contactText;
   fContactLinks.value = data.contactLinksRaw;
   fFooter.value = data.footer;
+  const repoInput = document.getElementById('fGithubRepo');
+  if (!repoInput.value && location.hostname.endsWith('.github.io')) {
+    const owner = location.hostname.split('.')[0];
+    const firstPathPart = location.pathname.split('/').filter(Boolean)[0];
+    repoInput.value = `${owner}/${firstPathPart || `${owner}.github.io`}`;
+  }
   editingAvatar = data.avatarImage || '';
   editingProjects = JSON.parse(JSON.stringify(data.projects || []));
   editingCompetitions = JSON.parse(JSON.stringify(data.competitions || []));
@@ -364,47 +481,36 @@ document.getElementById('editBtn').addEventListener('click', () => {
 });
 document.getElementById('closeBtn').addEventListener('click', () => overlay.classList.remove('open'));
 document.getElementById('languageSelect').addEventListener('change', (event) => {
-  const language = event.target.value;
-  if (!language) return;
-  const translatedUrl = `https://translate.google.com/translate?sl=auto&tl=${encodeURIComponent(language)}&u=${encodeURIComponent(location.href)}`;
-  window.open(translatedUrl, '_blank', 'noopener');
-  event.target.value = '';
+  applyLanguage(event.target.value);
 });
-function downloadJson(data) {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'data.json';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-}
-
+let preferredLanguage = 'en';
+try { preferredLanguage = localStorage.getItem('portfolio-language') || 'en'; } catch (error) {}
+applyLanguage(preferredLanguage);
 
 document.getElementById('saveBtn').addEventListener('click', async () => {
   const msg = document.getElementById('saveMsg');
   const saveBtn = document.getElementById('saveBtn');
   const candidate = readForm();
+  const tokenInput = document.getElementById('fGithubToken');
+  const token = tokenInput.value.trim();
+
+  if (location.hostname.endsWith('.github.io') && (!document.getElementById('fGithubRepo').value.trim() || !token)) {
+    msg.textContent = 'Enter your GitHub repository and a fine-grained token to save directly.';
+    return;
+  }
 
   saveBtn.disabled = true;
-  msg.textContent = 'Saving…';
+  msg.textContent = 'Saving to GitHub…';
 
-  const result = await saveData(candidate);
+  const result = await saveData(candidate, token);
+  tokenInput.value = '';
 
   saveBtn.disabled = false;
   if (result.ok) {
     current = candidate;
     render(current);
     typeIntro(current.typedLine);
-    msg.textContent = 'Saved ✓ — live for everyone now';
-  } else if (result.noServer) {
-    // static hosting (GitHub Pages): update the page now, and hand over a new data.json to upload
-    current = candidate;
-    render(current);
-    typeIntro(current.typedLine);
-    downloadJson(candidate);
-    msg.textContent = 'Downloaded data.json — upload it to your GitHub repo to keep it';
+    msg.textContent = `Saved to ${result.repo}. GitHub Pages will publish it after the build finishes.`;
   } else {
     msg.textContent = result.error || 'Could not save.';
   }
