@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="mark">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 2 L28 7 V16 C28 23 22.5 28 16 30 C9.5 28 4 23 4 16 V7 Z" fill="#2F6BFF" stroke="#111318" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M10.5 16.5 L14.5 20.5 L21.5 12.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="t">root@portfolio</span>
+  </div>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#certs">Certs</a>
+    <a href="#contact">Contact</a>
+    <button id="editBtn">Edit content</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section id="hero">
+    <div class="hero-copy">
+      <p class="hello">Hello, I'm</p>
+      <h1 class="name" id="heroName"></h1>
+      <p class="i-am">I'm</p>
+      <p class="prompt"><span id="typed"></span></p>
+      <p class="tagline" id="heroTagline"></p>
+      <div class="hero-links">
+        <a class="btn violet" href="#projects">My Projects</a>
+        <a class="btn pink" id="heroResume" href="#" target="_blank" rel="noopener">My Resume</a>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div class="oval">
+        <img id="heroAvatarImg" class="oval-photo" style="display:none" alt="Profile photo">
+        <!-- shown until a photo is uploaded -->
+        <div id="heroAvatarFallback" class="oval-fallback">
+<svg class="art" aria-hidden="true" viewBox="0 0 520 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- flying dashes -->
+        <rect class="dash" x="360" y="60"  width="28" height="4" rx="2" fill="#2DCFB8" style="animation-delay:0s"/>
+        <rect class="dash" x="430" y="120" width="22" height="4" rx="2" fill="#FFC61A" style="animation-delay:.9s"/>
+        <rect class="dash" x="300" y="30"  width="18" height="4" rx="2" fill="#FF6B4A" style="animation-delay:1.7s"/>
+        <rect class="dash" x="470" y="230" width="26" height="4" rx="2" fill="#2F6BFF" style="animation-delay:2.4s"/>
+        <rect class="dash" x="400" y="410" width="30" height="4" rx="2" fill="#2DCFB8" style="animation-delay:.5s"/>
+        <rect class="dash" x="150" y="425" width="20" height="4" rx="2" fill="#FFC61A" style="animation-delay:3s"/>
+        <rect class="dash" x="20"  y="250" width="24" height="4" rx="2" fill="#FF6B4A" style="animation-delay:1.2s"/>
+        <rect class="dash" x="250" y="330" width="18" height="4" rx="2" fill="#2F6BFF" style="animation-delay:3.6s"/>
+
+        <!-- ring -->
+        <g class="px" data-depth="10"><g class="a-ring">
+          <circle cx="190" cy="48" r="20" fill="none" stroke="#FF6B4A" stroke-width="10"/>
+        </g></g>
+
+        <!-- stacked cards -->
+        <g class="px" data-depth="16"><g class="a-cards">
+          <g transform="translate(0,90)"><g class="a-card c1">
+            <rect x="40" y="0" width="190" height="70" rx="3" fill="#fff" stroke="#111318" stroke-width="2"/>
+            <rect x="54" y="18" width="34" height="34" fill="#FFC61A"/>
+            <rect x="102" y="20" width="110" height="5" rx="2.5" fill="#C7D7F5"/>
+            <rect x="102" y="32" width="90" height="5" rx="2.5" fill="#C7D7F5"/>
+            <rect x="102" y="44" width="70" height="5" rx="2.5" fill="#C7D7F5"/>
+          </g></g>
+          <g transform="translate(0,176)"><g class="a-card c2">
+            <rect x="40" y="0" width="190" height="70" rx="3" fill="#fff" stroke="#111318" stroke-width="2"/>
+            <rect x="54" y="18" width="34" height="34" fill="#FFC61A"/>
+            <rect x="102" y="20" width="110" height="5" rx="2.5" fill="#C7D7F5"/>
+            <rect x="102" y="32" width="90" height="5" rx="2.5" fill="#C7D7F5"/>
+            <rect x="102" y="44" width="70" height="5" rx="2.5" fill="#C7D7F5"/>
+          </g></g>
+          <g transform="translate(0,262)"><g class="a-card c3">
+            <rect x="40" y="0" width="190" height="70" rx="3" fill="#fff" stroke="#111318" stroke-width="2"/>
+            <rect x="54" y="18" width="34" height="34" fill="#FFE08A"/>
+            <rect x="102" y="20" width="110" height="5" rx="2.5" fill="#C7D7F5"/>
+            <rect x="102" y="32" width="90" height="5" rx="2.5" fill="#C7D7F5"/>
+            <rect x="102" y="44" width="70" height="5" rx="2.5" fill="#C7D7F5"/>
+          </g></g>
+        </g></g>
+
+        <!-- plant -->
+        <g class="px" data-depth="22">
+          <path d="M16 392 C6 360 38 340 60 356 C82 372 88 408 74 440 L30 440 C22 424 20 408 16 392 Z" fill="#111318"/>
+          <g class="a-leaf">
+            <path d="M104 440 C62 408 70 346 110 322 C146 356 148 414 104 440 Z" fill="#FFB800" stroke="#111318" stroke-width="2"/>
+            <path d="M106 434 C102 396 106 358 110 330" stroke="#111318" stroke-width="2" fill="none"/>
+          </g>
+        </g>
+
+        <!-- triangle -->
+        <g class="px" data-depth="26"><g class="a-tri">
+          <polygon points="446,296 496,326 446,356" fill="#2DCFB8" stroke="#111318" stroke-width="2" stroke-linejoin="round"/>
+        </g></g>
+
+        <!-- person with laptop -->
+        <g class="px" data-depth="30"><g class="a-person">
+          <path d="M372 300 L350 352 L292 396" stroke="#2b2e35" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M355 300 L300 345 L236 388" stroke="#111318" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <ellipse cx="226" cy="394" rx="20" ry="10" transform="rotate(35 226 394)" fill="#FF6B4A" stroke="#111318" stroke-width="2"/>
+          <ellipse cx="283" cy="404" rx="20" ry="10" transform="rotate(35 283 404)" fill="#FF6B4A" stroke="#111318" stroke-width="2"/>
+          <path d="M312 190 C296 214 296 262 312 296 L384 296 C394 258 392 214 372 190 C362 196 322 196 312 190 Z" fill="#2F6BFF" stroke="#111318" stroke-width="2" stroke-linejoin="round"/>
+          <g transform="rotate(-10 296 282)">
+            <rect x="252" y="252" width="90" height="60" rx="6" fill="#2DCFB8" stroke="#111318" stroke-width="2"/>
+            <circle cx="297" cy="282" r="7" fill="#fff" stroke="#111318" stroke-width="1.5"/>
+          </g>
+          <path d="M322 208 C306 232 312 258 336 272" stroke="#111318" stroke-width="26" fill="none" stroke-linecap="round"/>
+          <path d="M322 208 C306 232 312 258 336 272" stroke="#2F6BFF" stroke-width="21" fill="none" stroke-linecap="round"/>
+          <circle cx="340" cy="274" r="10" fill="#FBE3D3" stroke="#111318" stroke-width="2"/>
+          <!-- head -->
+          <g fill="#111318">
+            <circle cx="318" cy="118" r="13"/><circle cx="336" cy="104" r="14"/><circle cx="358" cy="106" r="14"/>
+            <circle cx="374" cy="122" r="13"/><circle cx="378" cy="144" r="11"/><circle cx="312" cy="140" r="11"/><circle cx="316" cy="160" r="9"/>
+          </g>
+          <rect x="337" y="170" width="14" height="18" fill="#FBE3D3" stroke="#111318" stroke-width="2"/>
+          <ellipse cx="344" cy="146" rx="25" ry="29" fill="#FBE3D3" stroke="#111318" stroke-width="2"/>
+          <path d="M319 138 C323 116 351 110 367 130 C357 124 339 126 319 138 Z" fill="#111318"/>
+          <circle cx="330" cy="160" r="4" fill="#FF9AA2" opacity=".75"/><circle cx="358" cy="160" r="4" fill="#FF9AA2" opacity=".75"/>
+          <g transform="translate(335 148)"><path class="a-heart" d="M0 -1 C-3 -5 -8 -1 0 5 C8 -1 3 -5 0 -1 Z" fill="#FF4D6A"/></g>
+          <g transform="translate(353 148)"><path class="a-heart" d="M0 -1 C-3 -5 -8 -1 0 5 C8 -1 3 -5 0 -1 Z" fill="#FF4D6A"/></g>
+          <path d="M337 162 Q344 168 351 162" stroke="#111318" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M331 186 L343 198 L355 186 Z" fill="#fff" stroke="#111318" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M340 196 L346 196 L348 226 L343 232 L338 226 Z" fill="#FFC61A" stroke="#111318" stroke-width="1.5" stroke-linejoin="round"/>
+        </g></g>
+      </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+  <section id="about">
+    <p class="path">about</p>
+    <p id="aboutText"></p>
+  </section>
+
+  <hr class="rule">
+  <section id="skills">
+    <p class="path">skills</p>
+    <div class="skill-groups" id="skillGroups"></div>
+  </section>
+
+  <hr class="rule">
+  <section id="projects">
+    <p class="path">projects</p>
+    <div id="projectList"></div>
+  </section>
+
+  <hr class="rule">
+  <section id="certs">
+    <p class="path">certifications</p>
+    <ul class="certs" id="certList"></ul>
+  </section>
+
+  <hr class="rule">
+  <section id="contact">
+    <p class="path">contact</p>
+    <p id="contactText"></p>
+    <div class="contact-links" id="contactLinks"></div>
+  </section>
+</div>
+
+<footer id="footerText"></footer>
+
+<div id="editOverlay">
+  <div class="panel">
+    <h2>Edit your content</h2>
+    <p class="hint">Fill this in with your own info and photos, then hit Save. On a PHP host this saves for every visitor. On GitHub Pages it downloads a new data.json — upload that file to your repo to make the change permanent.</p>
+
+    <div class="field">
+      <label>Profile photo</label>
+      <div class="img-row">
+        <img id="avatarThumb" class="thumb" style="display:none">
+        <label class="file-label">Choose photo<input type="file" id="avatarFile" accept="image/*"></label>
+        <button class="btn small" id="avatarRemove" type="button">Remove</button>
+      </div>
+    </div>
+
+    <div class="field"><label>Name</label><input type="text" id="fName"></div>
+    <div class="field"><label>Typed role (types out under your name)</label><input type="text" id="fTyped"></div>
+    <div class="field"><label>Tagline</label><textarea id="fTagline"></textarea></div>
+    <div class="field"><label>Resume link</label><input type="url" id="fResume" placeholder="https://..."></div>
+    <div class="field"><label>About</label><textarea id="fAbout"></textarea></div>
+
+    <div class="field">
+      <label>Skills</label>
+      <p class="sub">One category per line: Category: item, item, item</p>
+      <textarea id="fSkills" rows="4"></textarea>
+    </div>
+
+    <h3 class="section-h">Projects</h3>
+    <div id="projectFields"></div>
+    <button class="btn small" id="addProjectBtn" type="button">+ Add project</button>
+
+    <div class="field" style="margin-top:24px">
+      <label>Certifications</label>
+      <p class="sub">One per line: Name | year or status</p>
+      <textarea id="fCerts" rows="3"></textarea>
+    </div>
+
+    <div class="field"><label>Contact intro line</label><textarea id="fContactText"></textarea></div>
+    <div class="field">
+      <label>Contact links</label>
+      <p class="sub">One per line: Label | value shown | link (mailto: or https://)</p>
+      <textarea id="fContactLinks" rows="3"></textarea>
+    </div>
+
+    <div class="field"><label>Footer line</label><input type="text" id="fFooter"></div>
+
+    <div class="panel-actions">
+      <span id="saveMsg"></span>
+      <span class="spacer"></span>
+      <button class="btn" id="closeBtn" type="button">Close</button>
+      <button class="btn primary" id="saveBtn" type="button">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Fallback content, used only if data.json can't be loaded (e.g. file opened directly)
+  const FALLBACK_DATA = {
+  "name": "Alex Rivera",
+  "typedLine": "Cybersecurity Student",
+  "tagline": "Cybersecurity student focused on offensive security and network defense — building, breaking, and writing up what I find.",
+  "resumeUrl": "#",
+  "about": "I'm a third-year cybersecurity student at Cascade University, spending most of my time in home-lab ranges, CTFs, and bug bounty write-ups. I'm particularly interested in web application security and Active Directory attack paths, and I'm currently studying for OSCP.",
+  "avatarImage": "",
+  "skillsRaw": "Offensive: Web app pentesting, Active Directory attacks, Burp Suite, Metasploit, Nmap\nDefensive: SIEM (Splunk), Log analysis, Incident response basics, Network monitoring\nTools & languages: Python, Bash, Linux, Wireshark, Git",
+  "projects": [
+    {
+      "title": "Home Lab AD Range",
+      "tags": "AD · PowerShell · Pentest",
+      "description": "Built a small Active Directory environment to practice common attack paths like Kerberoasting and ACL abuse.",
+      "link": "#",
+      "linkLabel": "Read write-up",
+      "image": ""
+    },
+    {
+      "title": "TryHackMe / HTB Write-ups",
+      "tags": "CTF · Web · Linux",
+      "description": "Ongoing collection of room and box write-ups covering web exploitation and privilege escalation methodology.",
+      "link": "#",
+      "linkLabel": "View collection",
+      "image": ""
+    }
+  ],
+  "certsRaw": "CompTIA Security+ | 2025\nOSCP | In progress",
+  "contactText": "Open to internships and entry-level roles in security. Best way to reach me is email.",
+  "contactLinksRaw": "Email | alex@example.com | mailto:alex@example.com\nGitHub | github.com/alexrivera | https://github.com/",
+  "footer": "Built and maintained by hand."
+};
+
+  // Load the saved content from data.json, then start the page script
+  fetch('data.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .catch(() => FALLBACK_DATA)
+    .then(d => {
+      window.INITIAL_DATA = d;
+      const s = document.createElement('script');
+      s.src = 'script.js';
+      document.body.appendChild(s);
+    });
+</script>
+
+</body>
+</html>
