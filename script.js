@@ -134,6 +134,21 @@ function render(data) {
     projEl.appendChild(div);
   });
 
+  const competitionEl = document.getElementById('competitionList');
+  competitionEl.innerHTML = '';
+  (data.competitions || []).forEach(c => {
+    const card = document.createElement('article'); card.className = 'competition';
+    const title = document.createElement('h3'); title.textContent = c.title || 'Competition';
+    const meta = document.createElement('p'); meta.className = 'competition-meta'; meta.textContent = [c.organizer, c.date, c.result].filter(Boolean).join(' · ');
+    const description = document.createElement('p'); description.textContent = c.description || '';
+    card.append(title, meta, description);
+    if (c.link) { const a = document.createElement('a'); a.className = 'project-link'; a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View details'; card.appendChild(a); }
+    competitionEl.appendChild(card);
+  });
+  if (!(data.competitions || []).length) {
+    const empty = document.createElement('p'); empty.className = 'competition-empty'; empty.textContent = 'Competition achievements will appear here.'; competitionEl.appendChild(empty);
+  }
+
   const certEl = document.getElementById('certList');
   certEl.innerHTML = '';
   parseCerts(data.certsRaw).forEach(c => {
@@ -156,6 +171,31 @@ function render(data) {
 
 // ---- edit form ----
 let editingProjects = [];
+let editingCompetitions = [];
+
+function buildCompetitionFields() {
+  const container = document.getElementById('competitionFields');
+  container.innerHTML = '';
+  editingCompetitions.forEach((c, idx) => {
+    const block = document.createElement('div'); block.className = 'project-block competition-block';
+    block.innerHTML = `<div class="project-block-top"><span>Competition ${idx + 1}</span><button class="btn small danger" data-comp-remove="${idx}" type="button">Remove</button></div>
+      <div class="field"><label>Name</label><input type="text" data-comp-field="title" data-idx="${idx}"></div>
+      <div class="field"><label>Organizer</label><input type="text" data-comp-field="organizer" data-idx="${idx}"></div>
+      <div class="field"><label>Date</label><input type="text" data-comp-field="date" data-idx="${idx}" placeholder="2026"></div>
+      <div class="field"><label>Result or award</label><input type="text" data-comp-field="result" data-idx="${idx}" placeholder="Finalist, 2nd place, participant..."></div>
+      <div class="field"><label>Description</label><textarea data-comp-field="description" data-idx="${idx}"></textarea></div>
+      <div class="field"><label>Link (optional)</label><input type="url" data-comp-field="link" data-idx="${idx}"></div>`;
+    container.appendChild(block);
+    block.querySelectorAll('[data-comp-field]').forEach(el => { el.value = c[el.dataset.compField] || ''; });
+  });
+  container.querySelectorAll('[data-comp-field]').forEach(el => el.addEventListener('input', () => { editingCompetitions[el.dataset.idx][el.dataset.compField] = el.value; }));
+  container.querySelectorAll('[data-comp-remove]').forEach(el => el.addEventListener('click', () => { editingCompetitions.splice(el.dataset.compRemove, 1); buildCompetitionFields(); }));
+}
+
+document.getElementById('addCompetitionBtn').addEventListener('click', () => {
+  editingCompetitions.push({ title: '', organizer: '', date: '', result: '', description: '', link: '' });
+  buildCompetitionFields();
+});
 
 function buildProjectFields() {
   const container = document.getElementById('projectFields');
@@ -235,10 +275,12 @@ function fillForm(data) {
   fFooter.value = data.footer;
   editingAvatar = data.avatarImage || '';
   editingProjects = JSON.parse(JSON.stringify(data.projects || []));
+  editingCompetitions = JSON.parse(JSON.stringify(data.competitions || []));
   const thumb = document.getElementById('avatarThumb');
   if (editingAvatar) { thumb.src = editingAvatar; thumb.style.display = 'block'; }
   else { thumb.style.display = 'none'; }
   buildProjectFields();
+  buildCompetitionFields();
 }
 
 document.getElementById('avatarFile').addEventListener('change', async (e) => {
@@ -265,6 +307,7 @@ function readForm() {
     avatarImage: editingAvatar,
     skillsRaw: fSkills.value,
     projects: editingProjects,
+    competitions: editingCompetitions,
     certsRaw: fCerts.value,
     contactText: fContactText.value.trim(),
     contactLinksRaw: fContactLinks.value,
@@ -320,6 +363,13 @@ document.getElementById('editBtn').addEventListener('click', () => {
   overlay.classList.add('open');
 });
 document.getElementById('closeBtn').addEventListener('click', () => overlay.classList.remove('open'));
+document.getElementById('languageSelect').addEventListener('change', (event) => {
+  const language = event.target.value;
+  if (!language) return;
+  const translatedUrl = `https://translate.google.com/translate?sl=auto&tl=${encodeURIComponent(language)}&u=${encodeURIComponent(location.href)}`;
+  window.open(translatedUrl, '_blank', 'noopener');
+  event.target.value = '';
+});
 function downloadJson(data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -374,4 +424,3 @@ if ('IntersectionObserver' in window && !reduceMotion) {
 } else {
   revealSections.forEach(s => s.classList.add('in-view'));
 }
-
