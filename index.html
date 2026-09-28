@@ -228,37 +228,6 @@
 
 <script>
   // Fallback content, used only if data.json can't be loaded (e.g. file opened directly)
-  const FALLBACK_DATA = {
-  "name": "Kwan Wei Loong",
-  "typedLine": "Cybersecurity Student",
-  "tagline": "Cybersecurity student focused on network security cloud security and SOC.,
-  "resumeUrl": "#",
-  "about": "I'm a third-year cybersecurity student at Cascade University, spending most of my time in home-lab ranges, CTFs, and bug bounty write-ups. I'm particularly interested in web application security and Active Directory attack paths, and I'm currently studying for OSCP.",
-  "avatarImage": "",
-  "skillsRaw": "Offensive: Web app pentesting, Active Directory attacks, Burp Suite, Metasploit, Nmap\nDefensive: SIEM (Splunk), Log analysis, Incident response basics, Network monitoring\nTools & languages: Python, Bash, Linux, Wireshark, Git",
-  "projects": [
-    {
-      "title": "Home Lab AD Range",
-      "tags": "AD · PowerShell · Pentest",
-      "description": "Built a small Active Directory environment to practice common attack paths like Kerberoasting and ACL abuse.",
-      "link": "#",
-      "linkLabel": "Read write-up",
-      "image": ""
-    },
-    {
-      "title": "TryHackMe / HTB Write-ups",
-      "tags": "CTF · Web · Linux",
-      "description": "Ongoing collection of room and box write-ups covering web exploitation and privilege escalation methodology.",
-      "link": "#",
-      "linkLabel": "View collection",
-      "image": ""
-    }
-  ],
-  "certsRaw": "CompTIA Security+ | 2025\nOSCP | In progress",
-  "contactText": "Open to internships and entry-level roles in security. Best way to reach me is email.",
-  "contactLinksRaw": "Email | alex@example.com | mailto:alex@example.com\nGitHub | github.com/alexrivera | https://github.com/",
-  "footer": "Built and maintained by hand."
-};
 
   // Load the saved content from data.json, then start the page script
   fetch('data.json', { cache: 'no-store' })
