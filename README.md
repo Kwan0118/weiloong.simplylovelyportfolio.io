@@ -29,7 +29,7 @@ The token is cleared after each save and is not stored by the page. Do not put i
 
 ## Language menu
 
-The menu changes the site interface labels in English, Bahasa Melayu, Simplified Chinese, and Traditional Chinese. Portfolio text you enter remains as written.
+The language menu includes English, Bahasa Melayu, Simplified Chinese, Traditional Chinese, Japanese, Korean, German, and Portuguese (Portugal). Choosing a language translates the portfolio text in place while keeping the original `data.json` content unchanged for editing and saving. Translations use the MyMemory service (not Google Translate); the text shown on the site is sent to that service, and successful translations are cached in the browser.
 
 ## Try it on your computer first
 
