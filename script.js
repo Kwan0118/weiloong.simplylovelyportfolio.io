@@ -71,6 +71,100 @@ const UI_TRANSLATIONS = {
   }
 };
 
+Object.assign(UI_TRANSLATIONS, {
+  ja: {
+    '[data-i18n="chooseLanguage"]':'言語を選択','nav a[href="#about"]':'プロフィール','nav a[href="#skills"]':'スキル','nav a[href="#projects"]':'プロジェクト','nav a[href="#competitions"]':'大会','nav a[href="#certs"]':'資格','nav a[href="#contact"]':'連絡先','#editBtn':'内容を編集','.hello':'こんにちは、私は','.i-am':'私は','.hero-links a[href="#projects"]':'プロジェクトを見る','#heroResume':'履歴書','#about .path':'プロフィール','#skills .path':'スキル','#projects .path':'プロジェクト','#competitions .path':'大会','#certs .path':'資格','#contact .path':'連絡先','#editOverlay h2':'内容を編集','#closeBtn':'閉じる','#saveBtn':'保存','#addProjectBtn':'+ プロジェクトを追加','#addCompetitionBtn':'+ 大会を追加'
+  },
+  ko: {
+    '[data-i18n="chooseLanguage"]':'언어 선택','nav a[href="#about"]':'소개','nav a[href="#skills"]':'기술','nav a[href="#projects"]':'프로젝트','nav a[href="#competitions"]':'대회','nav a[href="#certs"]':'자격증','nav a[href="#contact"]':'연락처','#editBtn':'내용 편집','.hello':'안녕하세요, 저는','.i-am':'저는','.hero-links a[href="#projects"]':'프로젝트 보기','#heroResume':'이력서','#about .path':'소개','#skills .path':'기술','#projects .path':'프로젝트','#competitions .path':'대회','#certs .path':'자격증','#contact .path':'연락처','#editOverlay h2':'내용 편집','#closeBtn':'닫기','#saveBtn':'저장','#addProjectBtn':'+ 프로젝트 추가','#addCompetitionBtn':'+ 대회 추가'
+  },
+  de: {
+    '[data-i18n="chooseLanguage"]':'Sprache wählen','nav a[href="#about"]':'Über mich','nav a[href="#skills"]':'Fähigkeiten','nav a[href="#projects"]':'Projekte','nav a[href="#competitions"]':'Wettbewerbe','nav a[href="#certs"]':'Zertifikate','nav a[href="#contact"]':'Kontakt','#editBtn':'Inhalte bearbeiten','.hello':'Hallo, ich bin','.i-am':'Ich bin','.hero-links a[href="#projects"]':'Meine Projekte','#heroResume':'Mein Lebenslauf','#about .path':'über mich','#skills .path':'fähigkeiten','#projects .path':'projekte','#competitions .path':'wettbewerbe','#certs .path':'zertifikate','#contact .path':'kontakt','#editOverlay h2':'Inhalte bearbeiten','#closeBtn':'Schließen','#saveBtn':'Speichern','#addProjectBtn':'+ Projekt hinzufügen','#addCompetitionBtn':'+ Wettbewerb hinzufügen'
+  },
+  'pt-PT': {
+    '[data-i18n="chooseLanguage"]':'Escolher idioma','nav a[href="#about"]':'Sobre mim','nav a[href="#skills"]':'Competências','nav a[href="#projects"]':'Projetos','nav a[href="#competitions"]':'Competições','nav a[href="#certs"]':'Certificações','nav a[href="#contact"]':'Contacto','#editBtn':'Editar conteúdo','.hello':'Olá, sou','.i-am':'Sou','.hero-links a[href="#projects"]':'Os meus projetos','#heroResume':'O meu currículo','#about .path':'sobre mim','#skills .path':'competências','#projects .path':'projetos','#competitions .path':'competições','#certs .path':'certificações','#contact .path':'contacto','#editOverlay h2':'Editar conteúdo','#closeBtn':'Fechar','#saveBtn':'Guardar','#addProjectBtn':'+ Adicionar projeto','#addCompetitionBtn':'+ Adicionar competição'
+  }
+});
+
+// Translate the current portfolio text in place. The source data stays in English
+// so edits and GitHub saves never overwrite it with machine-translated text.
+const LANGUAGE_NAMES = { ms: 'Malay', 'zh-CN': 'Chinese (Simplified)', 'zh-TW': 'Chinese (Traditional)', ja: 'Japanese', ko: 'Korean', de: 'German', 'pt-PT': 'Portuguese (Portugal)' };
+let languageRequestId = 0;
+function translationCacheKey(language, value) {
+  let hash = 2166136261;
+  for (const char of value) { hash ^= char.codePointAt(0); hash = Math.imul(hash, 16777619); }
+  return `portfolio-translation-${language}-${(hash >>> 0).toString(16)}`;
+}
+async function translateText(value, language) {
+  if (!value || !value.trim()) return value;
+  const key = translationCacheKey(language, value);
+  try {
+    const cached = localStorage.getItem(key);
+    if (cached) return cached;
+  } catch (error) {}
+  const endpoint = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(value)}&langpair=en|${encodeURIComponent(language)}`;
+  const response = await fetch(endpoint);
+  if (!response.ok) throw new Error(`Translation request failed (${response.status})`);
+  const result = await response.json();
+  const translated = result.responseData && result.responseData.translatedText;
+  if (result.responseStatus !== 200 || !translated) throw new Error('Translation was unavailable');
+  try { localStorage.setItem(key, translated); } catch (error) {}
+  return translated;
+}
+async function translatePortfolio(data, language, requestId) {
+  const copy = JSON.parse(JSON.stringify(data));
+  const jobs = [];
+  const skipKeys = new Set(['name', 'resumeUrl', 'avatarImage', 'link', 'image', 'date']);
+  function visit(object) {
+    if (Array.isArray(object)) { object.forEach(visit); return; }
+    if (!object || typeof object !== 'object') return;
+    Object.entries(object).forEach(([key, value]) => {
+      if (skipKeys.has(key) || typeof value !== 'string' || !value.trim()) return;
+      // Keep email addresses and destinations unchanged; translate only contact labels.
+      if (key === 'contactLinksRaw') {
+        const lines = value.split('\n');
+        object[key] = '';
+        jobs.push(Promise.all(lines.map(async line => {
+          const parts = line.split('|');
+          if (parts.length < 3) return line;
+          parts[0] = await translateText(parts[0].trim(), language);
+          return parts.map(part => part.trim()).join(' | ');
+        })).then(linesOut => { object[key] = linesOut.join('\n'); }));
+        return;
+      }
+      jobs.push(translateText(value, language).then(translated => { object[key] = translated; }));
+    });
+  }
+  visit(copy);
+  const settled = await Promise.allSettled(jobs);
+  if (requestId !== languageRequestId) return null;
+  return { data: copy, failed: settled.some(item => item.status === 'rejected') };
+}
+async function changeLanguage(language) {
+  applyLanguage(language);
+  const requestId = ++languageRequestId;
+  const status = document.getElementById('languageStatus');
+  if (language === 'en') {
+    render(current); typeIntro(current.typedLine);
+    status.textContent = '';
+    return;
+  }
+  status.textContent = `Translating portfolio to ${LANGUAGE_NAMES[language] || language}…`;
+  try {
+    const result = await translatePortfolio(current, language, requestId);
+    if (!result || requestId !== languageRequestId) return;
+    render(result.data); typeIntro(result.data.typedLine);
+    status.textContent = result.failed
+      ? 'Some text could not be translated. Check your connection and try again.'
+      : `Translated to ${LANGUAGE_NAMES[language]}.`;
+  } catch (error) {
+    if (requestId !== languageRequestId) return;
+    render(current); typeIntro(current.typedLine);
+    status.textContent = 'Translation service is unavailable. Showing the original language.';
+  }
+}
+
+['ja', 'ko', 'de', 'pt-PT'].forEach(language => { UI_TRANSLATIONS[language] = {}; });
 let activeLanguage = 'en';
 function applyLanguage(language) {
   if (!UI_TRANSLATIONS[language]) language = 'en';
@@ -481,11 +575,11 @@ document.getElementById('editBtn').addEventListener('click', () => {
 });
 document.getElementById('closeBtn').addEventListener('click', () => overlay.classList.remove('open'));
 document.getElementById('languageSelect').addEventListener('change', (event) => {
-  applyLanguage(event.target.value);
+  changeLanguage(event.target.value);
 });
 let preferredLanguage = 'en';
 try { preferredLanguage = localStorage.getItem('portfolio-language') || 'en'; } catch (error) {}
-applyLanguage(preferredLanguage);
+changeLanguage(preferredLanguage);
 
 document.getElementById('saveBtn').addEventListener('click', async () => {
   const msg = document.getElementById('saveMsg');
@@ -508,8 +602,7 @@ document.getElementById('saveBtn').addEventListener('click', async () => {
   saveBtn.disabled = false;
   if (result.ok) {
     current = candidate;
-    render(current);
-    typeIntro(current.typedLine);
+    await changeLanguage(activeLanguage);
     msg.textContent = `Saved to ${result.repo}. GitHub Pages will publish it after the build finishes.`;
   } else {
     msg.textContent = result.error || 'Could not save.';
