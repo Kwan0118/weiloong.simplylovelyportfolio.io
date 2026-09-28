@@ -38,6 +38,7 @@ nav { display: flex; gap: 26px; align-items: center; font-weight: 600; font-size
 nav a { color: var(--ink); text-decoration: none; transition: color .15s ease; }
 nav a:hover { color: var(--accent); }
 .language-picker select { background: #fff; border: 1.5px solid var(--ink); border-radius: 4px; padding: 7px 9px; color: var(--ink); font: 600 12px var(--sans); max-width: 145px; }
+.language-status { min-height: 1.2em; margin: 6px 0 0; color: var(--text-1); font-size: 12px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (max-width: 720px) { nav a:not(#editBtn) { display: none; } .mark span.t { display: none; } }
 #editBtn { background: #fff; border: 2px solid var(--ink); color: var(--ink); font-family: var(--sans); font-weight: 600; font-size: 13px; padding: 7px 14px; border-radius: 4px; cursor: pointer; transition: background .15s ease, color .15s ease, border-color .15s ease; }
