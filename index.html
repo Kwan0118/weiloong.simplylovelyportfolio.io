@@ -17,14 +17,18 @@
       <path d="M16 2 L28 7 V16 C28 23 22.5 28 16 30 C9.5 28 4 23 4 16 V7 Z" fill="#2F6BFF" stroke="#111318" stroke-width="2" stroke-linejoin="round"/>
       <path d="M10.5 16.5 L14.5 20.5 L21.5 12.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="t">Wei Loong Simply Lovely Portfolio</span>
+    <span class="t">root@portfolio</span>
   </div>
   <nav>
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
+    <a href="#competitions">Competitions</a>
     <a href="#certs">Certs</a>
     <a href="#contact">Contact</a>
+    <label class="language-picker"><span class="sr-only">Choose language</span><select id="languageSelect" aria-label="Choose language">
+      <option value="">Language</option><option value="ms">Bahasa Melayu</option><option value="zh-CN">中文 (简体)</option><option value="zh-TW">中文 (繁體)</option><option value="ta">தமிழ்</option><option value="ar">العربية</option><option value="bn">বাংলা</option><option value="de">Deutsch</option><option value="es">Español</option><option value="fr">Français</option><option value="hi">हिन्दी</option><option value="id">Indonesia</option><option value="it">Italiano</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt">Português</option><option value="ru">Русский</option><option value="th">ไทย</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option>
+    </select></label>
     <button id="editBtn">Edit content</button>
   </nav>
 </header>
@@ -157,6 +161,12 @@
   </section>
 
   <hr class="rule">
+  <section id="competitions">
+    <p class="path">competitions</p>
+    <div id="competitionList"></div>
+  </section>
+
+  <hr class="rule">
   <section id="certs">
     <p class="path">certifications</p>
     <ul class="certs" id="certList"></ul>
@@ -201,6 +211,10 @@
     <h3 class="section-h">Projects</h3>
     <div id="projectFields"></div>
     <button class="btn small" id="addProjectBtn" type="button">+ Add project</button>
+
+    <h3 class="section-h">Competitions</h3>
+    <div id="competitionFields"></div>
+    <button class="btn small" id="addCompetitionBtn" type="button">+ Add competition</button>
 
     <div class="field" style="margin-top:24px">
       <label>Certifications</label>
@@ -254,6 +268,7 @@
       "image": ""
     }
   ],
+  "competitions": [],
   "certsRaw": "CompTIA Security+ | 2025\nOSCP | In progress",
   "contactText": "Open to internships and entry-level roles in security. Best way to reach me is email.",
   "contactLinksRaw": "Email | alex@example.com | mailto:alex@example.com\nGitHub | github.com/alexrivera | https://github.com/",
