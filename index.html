@@ -11,13 +11,23 @@
 </head>
 <body>
 
+<div class="ambient-scene" aria-hidden="true">
+  <div class="scene-sky"></div>
+  <div class="scene-clouds"></div>
+  <div class="scene-sun"></div>
+  <div class="scene-sea"></div>
+  <div class="scene-shore"></div>
+  <div class="scene-stars"></div>
+  <div class="scene-moon"></div>
+</div>
+
 <header class="topbar">
   <div class="mark">
     <svg viewBox="0 0 32 32" aria-hidden="true">
       <path d="M16 2 L28 7 V16 C28 23 22.5 28 16 30 C9.5 28 4 23 4 16 V7 Z" fill="#2F6BFF" stroke="#111318" stroke-width="2" stroke-linejoin="round"/>
       <path d="M10.5 16.5 L14.5 20.5 L21.5 12.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="t">Simply Lovely Portfolio</span>
+    <span class="t">root@portfolio</span>
   </div>
   <nav>
     <a href="#about">About</a>
@@ -29,6 +39,7 @@
     <label class="language-picker"><span class="sr-only" data-i18n="chooseLanguage">Choose language</span><select id="languageSelect" aria-label="Choose language">
       <option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="de">Deutsch</option><option value="pt-PT">Português (Portugal)</option>
     </select></label>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">☾</button>
 
   </nav>
 </header>
