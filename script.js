@@ -569,10 +569,7 @@ function typeIntro(line) {
 typeIntro(current.typedLine);
 
 const overlay = document.getElementById('editOverlay');
-document.getElementById('editBtn').addEventListener('click', () => {
-  fillForm(current);
-  overlay.classList.add('open');
-});
+
 document.getElementById('closeBtn').addEventListener('click', () => overlay.classList.remove('open'));
 document.getElementById('languageSelect').addEventListener('change', (event) => {
   changeLanguage(event.target.value);
