@@ -39,7 +39,12 @@
     <label class="language-picker"><span class="sr-only" data-i18n="chooseLanguage">Choose language</span><select id="languageSelect" aria-label="Choose language">
       <option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="de">Deutsch</option><option value="pt-PT">Português (Portugal)</option>
     </select></label>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">☾</button>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path class="theme-moon" d="M20.2 15.6A8.5 8.5 0 0 1 8.4 3.8 8.6 8.6 0 1 0 20.2 15.6Z"/>
+        <g class="theme-sun"><circle cx="12" cy="12" r="4"/><path d="M12 1.8v2.1m0 16.2v2.1M4.8 4.8l1.5 1.5m11.4 11.4 1.5 1.5M1.8 12h2.1m16.2 0h2.1M4.8 19.2l1.5-1.5M17.7 6.3l1.5-1.5"/></g>
+      </svg>
+    </button>
 
   </nav>
 </header>
