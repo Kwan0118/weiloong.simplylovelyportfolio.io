@@ -550,6 +550,25 @@ if (canHover && !reduceMotion) {
   tick();
 }
 
+const themeToggle = document.getElementById('themeToggle');
+function setTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+  if (themeToggle) {
+    themeToggle.textContent = isDark ? '☀' : '☾';
+    const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.title = label;
+  }
+  try { localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light'); } catch (error) {}
+}
+let preferredTheme = 'light';
+try { preferredTheme = localStorage.getItem('portfolio-theme') || 'light'; } catch (error) {}
+setTheme(preferredTheme);
+if (themeToggle) themeToggle.addEventListener('click', () => {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+
 let current = loadData();
 render(current);
 fillForm(current);
