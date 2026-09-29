@@ -8,7 +8,7 @@ A static portfolio site (HTML + CSS + JavaScript). All your content lives in `da
 |---|---|
 | `index.html` | The page |
 | `styles.css` | All styling |
-| `script.js` | Animations and the edit panel |
+| `script.js` | Animations and language switching |
 | `data.json` | Your content (name, about, skills, projects, photos, links) |
 | `save.php` | Optional. Only used if you host on a PHP server. Not used on GitHub Pages. |
 
@@ -21,11 +21,16 @@ A static portfolio site (HTML + CSS + JavaScript). All your content lives in `da
 
 ## Editing your content
 
-1. Open your portfolio and click **Edit content** in the top menu.
-2. In GitHub, create a fine-grained personal access token for this repository. Give it **Contents: Read and write** permission.
-3. In the edit panel, confirm the `owner/repository` field, paste the token, make your changes, and click **Save**. The page commits the updated `data.json` directly to GitHub; it does not download a file. GitHub Pages publishes the commit after its build finishes.
+Edit data.json directly, save the file, then refresh the website. You do not need the on-page editor.
 
-The token is cleared after each save and is not stored by the page. Do not put it in `data.json` or share it in a message.
+## Adding pictures
+
+Put your pictures in the images/ folder. On GitHub, use Add file → Upload files and upload them into images/, then commit the upload. Use the relative file path in data.json:
+
+- Profile picture: set avatarImage to, for example, images/profile.jpg.
+- Project picture: set that project's image to, for example, images/home-lab.jpg.
+
+Use the actual file name and extension, including uppercase or lowercase letters as uploaded. Leave a field as an empty string ("") when you do not want a picture.
 
 ## Language menu
 
