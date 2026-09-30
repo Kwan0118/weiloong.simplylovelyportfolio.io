@@ -165,6 +165,20 @@ async function changeLanguage(language) {
 }
 
 ['ja', 'ko', 'de', 'pt-PT'].forEach(language => { UI_TRANSLATIONS[language] = {}; });
+const inspirationSectionLabels = {
+  en: ['Inspirations', 'my inspirations'],
+  ms: ['Inspirasi', 'inspirasi saya'],
+  'zh-CN': ['激励人物', '我的榜样'],
+  'zh-TW': ['激勵人物', '我的榜樣'],
+  ja: ['憧れの人', '私の憧れの人'],
+  ko: ['영감을 주는 사람', '내게 영감을 주는 사람'],
+  de: ['Vorbilder', 'meine Vorbilder'],
+  'pt-PT': ['Inspirações', 'as minhas inspirações']
+};
+Object.entries(inspirationSectionLabels).forEach(([language, labels]) => {
+  UI_TRANSLATIONS[language]['nav a[href="#inspirations"]'] = labels[0];
+  UI_TRANSLATIONS[language]['#inspirations .path'] = labels[1];
+});
 let activeLanguage = 'en';
 function applyLanguage(language) {
   if (!UI_TRANSLATIONS[language]) language = 'en';
@@ -351,6 +365,40 @@ function render(data) {
     competitionEl.appendChild(empty);
   }
 
+  const inspirationEl = document.getElementById('inspirationList');
+  inspirationEl.innerHTML = '';
+  (data.inspirations || []).forEach(person => {
+    const card = document.createElement('article');
+    card.className = 'inspiration-card';
+
+    const photoWrap = document.createElement('div');
+    photoWrap.className = 'inspiration-photo-wrap';
+    const initials = document.createElement('span');
+    initials.className = 'inspiration-initials';
+    initials.textContent = (person.name || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+    photoWrap.appendChild(initials);
+
+    const image = safeImage(person.image);
+    if (image) {
+      const img = document.createElement('img');
+      img.className = 'inspiration-photo';
+      img.src = image;
+      img.alt = `${person.name || 'Inspiration'} photo`;
+      img.onload = () => { initials.hidden = true; };
+      img.onerror = () => { img.style.display = 'none'; initials.hidden = false; };
+      photoWrap.appendChild(img);
+    }
+
+    const name = document.createElement('h3');
+    name.className = 'inspiration-name';
+    name.textContent = person.name || '';
+    const quote = document.createElement('blockquote');
+    quote.className = 'inspiration-quote';
+    quote.textContent = person.quote || '';
+    card.append(photoWrap, name, quote);
+    inspirationEl.appendChild(card);
+  });
+
   const certEl = document.getElementById('certList');
   certEl.innerHTML = '';
   parseCerts(data.certsRaw).forEach(c => {
@@ -519,6 +567,7 @@ function readForm() {
     skillsRaw: fSkills.value,
     projects: editingProjects,
     competitions: editingCompetitions,
+    inspirations: JSON.parse(JSON.stringify(current.inspirations || [])),
     certsRaw: fCerts.value,
     contactText: fContactText.value.trim(),
     contactLinksRaw: fContactLinks.value,
