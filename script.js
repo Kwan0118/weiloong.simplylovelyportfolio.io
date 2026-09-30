@@ -113,7 +113,7 @@ async function changeLanguage(language) {
 }
 
 const inspirationSectionLabels = {
-  en: ['Inspirations', 'my inspirations'],
+  en: ['Inspirations', 'My Inspirations'],
   ms: ['Inspirasi', 'inspirasi saya'],
   'zh-CN': ['激励人物', '我的榜样'],
   'zh-TW': ['激勵人物', '我的榜樣'],
