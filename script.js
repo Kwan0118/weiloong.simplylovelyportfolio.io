@@ -206,7 +206,10 @@ function applyLanguage(language) {
   });
   const selector = document.getElementById('languageSelect');
   if (selector) selector.value = language;
-  try { localStorage.setItem('portfolio-language', language); } catch (error) {}
+  try {
+    if (language === 'en') localStorage.removeItem('portfolio-language');
+    else localStorage.setItem('portfolio-language', language);
+  } catch (error) {}
 }
 
 // resize + compress an uploaded image so it stays small in localStorage
@@ -641,9 +644,14 @@ document.getElementById('closeBtn').addEventListener('click', () => overlay.clas
 document.getElementById('languageSelect').addEventListener('change', (event) => {
   changeLanguage(event.target.value);
 });
-let preferredLanguage = 'en';
-try { preferredLanguage = localStorage.getItem('portfolio-language') || 'en'; } catch (error) {}
-changeLanguage(preferredLanguage);
+let preferredLanguage = '';
+try { preferredLanguage = localStorage.getItem('portfolio-language') || ''; } catch (error) {}
+if (preferredLanguage && preferredLanguage !== 'en') {
+  changeLanguage(preferredLanguage);
+} else {
+  applyLanguage('en');
+  document.getElementById('languageSelect').value = '';
+}
 
 document.getElementById('saveBtn').addEventListener('click', async () => {
   const msg = document.getElementById('saveMsg');
