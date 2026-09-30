@@ -196,7 +196,7 @@ footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); font-fam
 }
 
 /* Animated illustrated sky for light and dark theme */
-:root { --surface-1: rgba(255, 255, 255, .9); }
+:root { --surface-1: rgba(255, 255, 255, .97); }
 html[data-theme="dark"] {
   color-scheme: dark;
   --bg-0: #081327; --bg-1: rgba(13, 25, 43, .96); --ink: #eef4ff;
@@ -226,7 +226,7 @@ html[data-theme="dark"] .scene-moon { opacity: 1; transform: translateY(0) scale
 html[data-theme="dark"] .theme-toggle { border-color: rgba(219, 232, 255, .2); background: rgba(20, 36, 64, .9); color: #ffd779; box-shadow: 0 3px 16px rgba(0, 0, 0, .28), inset 0 0 0 1px rgba(255,255,255,.025); }
 html[data-theme="dark"] .theme-sun { opacity: 1; transform: rotate(0) scale(1); }
 html[data-theme="dark"] .theme-moon { opacity: 0; transform: rotate(35deg) scale(.7); }
-.topbar { background: rgba(251,251,253,.78); }
+.topbar { background: rgba(251,251,253,.94); }
 html[data-theme="dark"] .topbar { background: rgba(8,19,39,.82); }
 .language-picker select, .btn { background-color: var(--surface-1); color: var(--ink); }
 .project, .competition { background: var(--surface-1); }
@@ -252,10 +252,10 @@ html:not([data-theme="dark"]) .hero-copy {
   padding: clamp(20px, 3vw, 34px);
   border: 1px solid rgba(255, 255, 255, .78);
   border-radius: 20px;
-  background: rgba(255, 255, 255, .82);
-  box-shadow: 0 12px 34px rgba(29, 53, 74, .1);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 12px 34px rgba(29, 53, 74, .12);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
 }
 html:not([data-theme="dark"]) :is(.path, #aboutText, .skill-group h3, .certs li, #contact p, .contact-links a, footer) {
   text-shadow: 0 1px 3px rgba(255, 255, 255, .96);
@@ -269,10 +269,10 @@ html:not([data-theme="dark"]) .wrap > section:not(#hero) {
   padding: 28px 32px;
   border: 1px solid rgba(255, 255, 255, .78);
   border-radius: 16px;
-  background: rgba(255, 255, 255, .84);
-  box-shadow: 0 10px 30px rgba(29, 53, 74, .08);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 10px 30px rgba(29, 53, 74, .1);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
 }
 html:not([data-theme="dark"]) .wrap > section:last-of-type:not(#hero) {
   padding-bottom: 28px;
