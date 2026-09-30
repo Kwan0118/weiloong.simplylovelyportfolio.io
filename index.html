@@ -207,10 +207,11 @@
 <footer id="footerText"></footer>
 
 <script>
-  // Load portfolio content from data.json. Serve this site over HTTP/HTTPS for fetch() to work.
-  fetch('data.json', { cache: 'no-store' })
+  // Resolve beside this page so GitHub Pages project-site paths work correctly.
+  const portfolioDataUrl = new URL('./data.json', document.baseURI);
+  fetch(portfolioDataUrl, { cache: 'no-store' })
     .then(response => {
-      if (!response.ok) throw new Error(`data.json returned ${response.status}`);
+      if (!response.ok) throw new Error(`${portfolioDataUrl.pathname} returned HTTP ${response.status}`);
       return response.json();
     })
     .then(data => {
@@ -222,7 +223,7 @@
     .catch(error => {
       console.error('Unable to load portfolio data.json:', error);
       const status = document.getElementById('languageStatus');
-      if (status) status.textContent = 'Could not load portfolio content. Check data.json and reload the page.';
+      if (status) status.textContent = `Could not load data.json (${error.message}). Make sure data.json is beside index.html, valid JSON, and uploaded to GitHub Pages.`;
     });
 </script>
 
