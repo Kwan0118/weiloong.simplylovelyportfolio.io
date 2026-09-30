@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=day-night-4">
+<link rel="stylesheet" href="styles.css?v=inspirations-1">
 </head>
 <body>
 
@@ -33,6 +33,7 @@
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
     <a href="#competitions">Competitions</a>
+    <a href="#inspirations">Inspirations</a>
     <a href="#certs">Certs</a>
     <a href="#contact">Contact</a>
     <label class="language-picker"><span class="sr-only" data-i18n="chooseLanguage">Choose language</span><select id="languageSelect" aria-label="Choose language">
@@ -183,6 +184,12 @@
   </section>
 
   <hr class="rule">
+  <section id="inspirations">
+    <p class="path">my inspirations</p>
+    <div id="inspirationList"></div>
+  </section>
+
+  <hr class="rule">
   <section id="certs">
     <p class="path">certifications</p>
     <ul class="certs" id="certList"></ul>
@@ -274,7 +281,7 @@
     .then(data => {
       window.INITIAL_DATA = data;
       const script = document.createElement('script');
-      script.src = 'script.js?v=day-night-3';
+      script.src = 'script.js?v=inspirations-1';
       document.body.appendChild(script);
     })
     .catch(error => {
