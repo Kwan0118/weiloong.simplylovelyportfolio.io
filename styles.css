@@ -245,4 +245,18 @@ html[data-theme="dark"] .oval-fallback { background: #142541; }
 html[data-theme="dark"] .scene-stars { animation: stars-twinkle 4s ease-in-out infinite alternate; }
 html[data-theme="dark"] .scene-video { filter: brightness(.34) saturate(.72) hue-rotate(12deg); }
 html[data-theme="dark"] .scene-night-overlay { opacity: 1; background: linear-gradient(180deg, rgba(5,13,35,.56), rgba(6,13,30,.78)); }
-@media (prefers-reduced-motion: reduce) { .scene-video { display: none; } .ambient-scene { background: center / cover no-repeat url("images/steam-summer-sale-2024.jpg"); }
+@media (prefers-reduced-motion: reduce) { .scene-video { display: none; } .ambient-scene { background: center / cover no-repeat url("images/steam-summer-sale-2024.jpg"); } }
+
+/* Keep text readable over the illustrated wallpaper in light mode. */
+html:not([data-theme="dark"]) .hero-copy {
+  padding: clamp(20px, 3vw, 34px);
+  border: 1px solid rgba(255, 255, 255, .78);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 12px 34px rgba(29, 53, 74, .1);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+html:not([data-theme="dark"]) :is(.path, #aboutText, .skill-group h3, .certs li, #contact p, .contact-links a, footer) {
+  text-shadow: 0 1px 3px rgba(255, 255, 255, .96);
+}
