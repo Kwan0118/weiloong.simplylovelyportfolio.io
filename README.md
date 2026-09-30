@@ -10,7 +10,6 @@ A static portfolio site (HTML + CSS + JavaScript). All your content lives in `da
 | `styles.css` | All styling |
 | `script.js` | Animations and language switching |
 | `data.json` | Your content (name, about, skills, projects, photos, links) |
-| `save.php` | Optional. Only used if you host on a PHP server. Not used on GitHub Pages. |
 
 ## Put it online with GitHub Pages
 
@@ -34,7 +33,11 @@ Use the actual file name and extension, including uppercase or lowercase letters
 
 ## Language menu
 
-The language menu includes English, Bahasa Melayu, Simplified Chinese, Traditional Chinese, Japanese, Korean, German, and Portuguese (Portugal). Choosing a language translates the portfolio text in place while keeping the original `data.json` content unchanged for editing and saving. Translations use the MyMemory service (not Google Translate); the text shown on the site is sent to that service, and successful translations are cached in the browser.
+The site starts in English. Use **Select language** to return to English after choosing another language. The menu also offers Bahasa Melayu, Simplified Chinese, Traditional Chinese, Japanese, Korean, German, and Portuguese (Portugal). Choosing one translates portfolio text in place; the original `data.json` stays unchanged. Translations use the MyMemory service, and successful translations are cached in the browser.
+
+## Inspiration photos
+
+The inspiration cards read their names, quotes, and image paths from `data.json`. Add photos as `images/max-verstappen.jpg` and `images/stephen-curry.jpg`, or change the paths to match your uploaded filenames.
 
 ## Try it on your computer first
 
