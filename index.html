@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=inspirations-1">
+<link rel="stylesheet" href="styles.css?v=no-editor-1">
 </head>
 <body>
 
@@ -37,8 +37,8 @@
     <a href="#certs">Certs</a>
     <a href="#contact">Contact</a>
     <label class="language-picker"><span class="sr-only" data-i18n="chooseLanguage">Choose language</span><select id="languageSelect" aria-label="Choose language">
-      <option value="" selected disabled>Select language</option>
-      <option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="de">Deutsch</option><option value="pt-PT">Português (Portugal)</option>
+      <option value="en" selected>Select language</option>
+      <option value="ms">Bahasa Melayu</option><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="de">Deutsch</option><option value="pt-PT">Português (Portugal)</option>
     </select></label>
     <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -206,72 +206,6 @@
 
 <footer id="footerText"></footer>
 
-<div id="editOverlay">
-  <div class="panel">
-    <h2>Edit your content</h2>
-    <p class="hint" data-i18n="editorHint">Edit your details and save them directly to your GitHub repository. GitHub will publish the changes after its Pages build completes.</p>
-
-    <div class="field github-save-fields">
-      <label for="fGithubRepo" data-i18n="githubRepo">GitHub repository (owner/repository)</label>
-      <input type="text" id="fGithubRepo" placeholder="username/portfolio" autocomplete="off">
-      <label for="fGithubToken" data-i18n="githubToken">Fine-grained GitHub token (Contents: read and write)</label>
-      <input type="password" id="fGithubToken" autocomplete="off" spellcheck="false">
-      <p class="sub" data-i18n="tokenHint">Create a fine-grained token for this repository with Contents read and write access. The token is used only for this save and is not stored.</p>
-    </div>
-
-    <div class="field">
-      <label>Profile photo</label>
-      <div class="img-row">
-        <img id="avatarThumb" class="thumb" style="display:none">
-        <label class="file-label">Choose photo<input type="file" id="avatarFile" accept="image/*"></label>
-        <button class="btn small" id="avatarRemove" type="button">Remove</button>
-      </div>
-    </div>
-
-    <div class="field"><label>Name</label><input type="text" id="fName"></div>
-    <div class="field"><label>Typed role (types out under your name)</label><input type="text" id="fTyped"></div>
-    <div class="field"><label>Tagline</label><textarea id="fTagline"></textarea></div>
-    <div class="field"><label>Resume link</label><input type="url" id="fResume" placeholder="https://..."></div>
-    <div class="field"><label>About</label><textarea id="fAbout"></textarea></div>
-
-    <div class="field">
-      <label>Skills</label>
-      <p class="sub">One category per line: Category: item, item, item</p>
-      <textarea id="fSkills" rows="4"></textarea>
-    </div>
-
-    <h3 class="section-h">Projects</h3>
-    <div id="projectFields"></div>
-    <button class="btn small" id="addProjectBtn" type="button">+ Add project</button>
-
-    <h3 class="section-h">Competitions</h3>
-    <div id="competitionFields"></div>
-    <button class="btn small" id="addCompetitionBtn" type="button">+ Add competition</button>
-
-    <div class="field" style="margin-top:24px">
-      <label>Certifications</label>
-      <p class="sub">One per line: Name | year or status</p>
-      <textarea id="fCerts" rows="3"></textarea>
-    </div>
-
-    <div class="field"><label>Contact intro line</label><textarea id="fContactText"></textarea></div>
-    <div class="field">
-      <label>Contact links</label>
-      <p class="sub">One per line: Label | value shown | link (mailto: or https://)</p>
-      <textarea id="fContactLinks" rows="3"></textarea>
-    </div>
-
-    <div class="field"><label>Footer line</label><input type="text" id="fFooter"></div>
-
-    <div class="panel-actions">
-      <span id="saveMsg"></span>
-      <span class="spacer"></span>
-      <button class="btn" id="closeBtn" type="button">Close</button>
-      <button class="btn primary" id="saveBtn" type="button">Save</button>
-    </div>
-  </div>
-</div>
-
 <script>
   // Load portfolio content from data.json. Serve this site over HTTP/HTTPS for fetch() to work.
   fetch('data.json', { cache: 'no-store' })
@@ -282,7 +216,7 @@
     .then(data => {
       window.INITIAL_DATA = data;
       const script = document.createElement('script');
-      script.src = 'script.js?v=language-select-1';
+      script.src = 'script.js?v=no-editor-1';
       document.body.appendChild(script);
     })
     .catch(error => {
