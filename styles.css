@@ -260,3 +260,23 @@ html:not([data-theme="dark"]) .hero-copy {
 html:not([data-theme="dark"]) :is(.path, #aboutText, .skill-group h3, .certs li, #contact p, .contact-links a, footer) {
   text-shadow: 0 1px 3px rgba(255, 255, 255, .96);
 }
+html:not([data-theme="dark"]) .wrap > hr.rule {
+  margin-top: 38px;
+  border-top-color: rgba(17, 19, 24, .24);
+}
+html:not([data-theme="dark"]) .wrap > section:not(#hero) {
+  margin-top: 28px;
+  padding: 28px 32px;
+  border: 1px solid rgba(255, 255, 255, .78);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .84);
+  box-shadow: 0 10px 30px rgba(29, 53, 74, .08);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+html:not([data-theme="dark"]) .wrap > section:last-of-type:not(#hero) {
+  padding-bottom: 28px;
+}
+@media (max-width: 600px) {
+  html:not([data-theme="dark"]) .wrap > section:not(#hero) { padding: 24px 20px; }
+}
