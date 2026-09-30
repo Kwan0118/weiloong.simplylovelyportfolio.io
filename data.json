@@ -29,12 +29,12 @@
         {
             "name": "Max Verstappen",
             "quote": "Simply lovely.",
-            "image": "images/"
+            "image": "images/Max.jpg"
         },
         {
             "name": "Stephen Curry",
             "quote": "I can do all things.",
-            "image": "images/"
+            "image": "images/Curry.jpg"
         }
     ],
   "certsRaw": "",
