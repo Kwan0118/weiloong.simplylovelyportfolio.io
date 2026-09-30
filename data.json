@@ -1,10 +1,10 @@
 {
   "name": "Kwan Wei Loong",
   "typedLine": "Cybersecurity Student",
-  "tagline": "Cybersecurity student focused on network security, cloud security and SOC. IP addresses is the most interesting in the world.",
+  "tagline": "Cybersecurity student focused on network security, cloud security and SOC. Ip addresses is the most interesting in the world.",
   "resumeUrl": "file:///C:/Users/User/Documents/Degree%20internship/Kwan%20Wei%20Loong%20Resume.pdf",
   "about": "I'm a third-year cybersecurity student at Asia Pacific University. I'm particularly interested in network security, cloud security and SOC, and I'm currently studying for AWS cloud fundamental.",
-  "avatarImage": "images/profile.jpeg",
+  "avatarImage": "",
   "skillsRaw": "Offensive: Burp Suite, Metasploit, Nmap\nDefensive: Log analysis, Network monitoring\nTools & languages: Python, Bash, Linux, Wireshark, Git",
   "projects": [
     {
@@ -25,18 +25,18 @@
     }
   ],
   "competitions": [],
-    "inspirations": [
-        {
-            "name": "Max Verstappen",
-            "quote": "Simply lovely.",
-            "image": "images/Max.jpg"
-        },
-        {
-            "name": "Stephen Curry",
-            "quote": "I can do all things.",
-            "image": "images/Curry.jpg"
-        }
-    ],
+  "inspirations": [
+    {
+      "name": "Max Verstappen",
+      "quote": "Simply lovely.",
+      "image": "images/Max.jpg"
+    },
+    {
+      "name": "Stephen Curry",
+      "quote": "I can do all things.",
+      "image": "images/Curry.jpg"
+    }
+  ],
   "certsRaw": "",
   "contactText": "Feel free to contact me via contact below.",
   "contactLinksRaw": "Email | weiloongkwan@gmail.com | mailto:weiloongkwan@gmail.com\nGitHub | github.com/alexrivera | https://github.com/",
