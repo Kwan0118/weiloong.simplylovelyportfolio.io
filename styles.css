@@ -135,6 +135,18 @@ hr.rule { border: none; border-top: 1px solid var(--line); margin: 96px 0 0; }
 .competition .competition-meta { color: var(--accent); font: 12px var(--mono); }
 .competition-empty { color: var(--text-1); margin: 0; }
 
+/* Favourite people and the words that inspire you */
+#inspirationList { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.inspiration-card { overflow: hidden; border: 2px solid var(--ink); border-radius: 12px; background: var(--surface-1); box-shadow: 5px 5px 0 var(--accent-soft); }
+.inspiration-photo-wrap { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 10; overflow: hidden; background: linear-gradient(135deg, var(--accent-soft), rgba(45, 207, 184, .24)); }
+.inspiration-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.inspiration-initials { color: var(--accent); font: 800 clamp(44px, 7vw, 76px) var(--sans); }
+.inspiration-initials[hidden] { display: none; }
+.inspiration-name { padding: 16px 20px 0; font-size: 19px; font-weight: 700; }
+.inspiration-quote { margin: 0; padding: 8px 20px 22px; color: var(--text-1); font-size: 15px; font-style: italic; }
+.inspiration-quote::before { content: '“'; color: var(--accent); font-size: 24px; font-weight: 800; margin-right: 4px; }
+.inspiration-quote::after { content: '”'; color: var(--accent); font-size: 24px; font-weight: 800; margin-left: 4px; }
+
 /* CERTS */
 .certs { margin: 0; padding: 0; list-style: none; max-width: 640px; }
 .certs li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px dashed var(--line); font-size: 15.5px; font-weight: 600; flex-wrap: wrap; }
