@@ -371,6 +371,23 @@ if (themeToggle) themeToggle.addEventListener('click', () => {
 let current = loadData();
 render(current);
 
+const whatsappToggle = document.getElementById('whatsappToggle');
+const whatsappChat = document.getElementById('whatsappChat');
+const whatsappChatLink = document.getElementById('whatsappChatLink');
+const whatsappSetupHint = document.getElementById('whatsappSetupHint');
+const whatsappNumber = String(current.whatsappNumber || '').replace(/\D/g, '');
+if (whatsappNumber) {
+  whatsappChatLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hi Wei Loong, I would like to contact you.')}`;
+  whatsappChatLink.removeAttribute('aria-disabled');
+} else {
+  whatsappChatLink.addEventListener('click', event => event.preventDefault());
+  whatsappSetupHint.hidden = false;
+}
+whatsappToggle.addEventListener('click', () => {
+  const isOpen = whatsappToggle.getAttribute('aria-expanded') === 'true';
+  whatsappToggle.setAttribute('aria-expanded', String(!isOpen));
+  whatsappChat.hidden = isOpen;
+});
 
 const typedEl = document.getElementById('typed');
 function typeIntro(line) {
