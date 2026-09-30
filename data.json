@@ -24,6 +24,19 @@
       "image": ""
     }
   ],
+  "competitions": [],
+    "inspirations": [
+        {
+            "name": "Max Verstappen",
+            "quote": "Simply lovely.",
+            "image": "images/max-verstappen.jpg"
+        },
+        {
+            "name": "Stephen Curry",
+            "quote": "I can do all things.",
+            "image": "images/stephen-curry.jpg"
+        }
+    ],
   "certsRaw": "",
   "contactText": "Feel free to contact me via contact below.",
   "contactLinksRaw": "Email | weiloongkwan@gmail.com | mailto:weiloongkwan@gmail.com\nGitHub | github.com/alexrivera | https://github.com/",
