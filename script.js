@@ -373,6 +373,7 @@ render(current);
 
 const whatsappToggle = document.getElementById('whatsappToggle');
 const whatsappChat = document.getElementById('whatsappChat');
+const whatsappWidget = document.querySelector('.whatsapp-widget');
 const whatsappChatLink = document.getElementById('whatsappChatLink');
 const whatsappSetupHint = document.getElementById('whatsappSetupHint');
 const whatsappNumber = String(current.whatsappNumber || '').replace(/\D/g, '');
@@ -387,6 +388,7 @@ whatsappToggle.addEventListener('click', () => {
   const isOpen = whatsappToggle.getAttribute('aria-expanded') === 'true';
   whatsappToggle.setAttribute('aria-expanded', String(!isOpen));
   whatsappChat.hidden = isOpen;
+  whatsappWidget.classList.toggle('chat-open', !isOpen);
 });
 
 const typedEl = document.getElementById('typed');
