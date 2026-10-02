@@ -317,7 +317,22 @@ function render(data) {
 
   const linksEl = document.getElementById('contactLinks');
   linksEl.innerHTML = '';
-  parseLinks(data.contactLinksRaw).forEach(c => {
+  const contactEntries = parseLinks(data.contactLinksRaw);
+  const existingLabels = new Set(contactEntries.map(entry => (entry.label || '').toLowerCase()));
+  [
+    { label: 'LinkedIn', keys: ['linkedin', 'linkedinurl', 'linkedinUrl', 'LinkedIn', 'linkedIn', 'linkedInUrl', 'LinkedInUrl'] },
+    { label: 'Instagram', keys: ['instagram', 'instagramurl', 'instagramUrl', 'Instagram', 'InstagramUrl'] }
+  ].forEach(profile => {
+    if (existingLabels.has(profile.label.toLowerCase())) return;
+    const key = profile.keys.find(candidate => typeof data[candidate] === 'string' && data[candidate].trim());
+    if (!key) return;
+    const rawUrl = data[key].trim();
+    const href = safeLink(/^https?:\/\//i.test(rawUrl) ? rawUrl : `https://${rawUrl.replace(/^\/+/, '')}`);
+    if (!href) return;
+    const display = rawUrl.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+    contactEntries.push({ label: profile.label, value: display, href });
+  });
+  contactEntries.forEach(c => {
     const a = document.createElement('a');
     const href = safeLink(c.href);
     if (href) { a.href = href; a.target = href.startsWith('http') ? '_blank' : '_self'; a.rel = 'noopener'; }
